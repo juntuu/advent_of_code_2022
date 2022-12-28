@@ -1,57 +1,13 @@
 #!/usr/bin/awk -f
 
-function wrap(e, x, y, a, b, r, d) {
-	r = 1000 * b + 4 * a + r
-	d = 1000 * y + 4 * x + d
-	e[d] = r - d
-}
-
-BEGIN {
-	for (y = 1; y <= 50; y++) {
-		wrap(A, 50, y, 150, y, 2, 2)
-		wrap(A, 151, y, 51, y, 0, 0)
-		wrap(B, 50, y, 1, 151-y, 0, 2)
-		wrap(B, 151, y, 100, 151-y, 2, 0)
-	}
-	for (y = 51; y <= 100; y++) {
-		wrap(A, 50, y, 100, y, 2, 2)
-		wrap(A, 101, y, 51, y, 0, 0)
-		wrap(B, 50, y, y-50, 101, 1, 2)
-		wrap(B, 101, y, 50+y, 50, 3, 0)
-	}
-	for (y = 101; y <= 150; y++) {
-		wrap(A, 0, y, 100, y, 2, 2)
-		wrap(A, 101, y, 1, y, 0, 0)
-		wrap(B, 0, y, 51, 151-y, 0, 2)
-		wrap(B, 101, y, 150, 151-y, 2, 0)
-	}
-	for (y = 151; y <= 200; y++) {
-		wrap(A, 0, y, 50, y, 2, 2)
-		wrap(A, 51, y, 1, y, 0, 0)
-		wrap(B, 0, y, y-100, 1, 1, 2)
-		wrap(B, 51, y, y-100, 150, 3, 0)
-	}
-
-	for (x = 1; x <= 50; x++) {
-		wrap(A, x, 100, x, 200, 3, 3)
-		wrap(A, x, 201, x, 101, 1, 1)
-		wrap(B, x, 100, 51, 50+x, 0, 3)
-		wrap(B, x, 201, x+100, 1, 1, 1)
-	}
-	for (x = 51; x <= 100; x++) {
-		wrap(A, x, 0, x, 150, 3, 3)
-		wrap(A, x, 151, x, 1, 1, 1)
-		wrap(B, x, 0, 1, 100+x, 0, 3)
-		wrap(B, x, 151, 50, 100+x, 2, 1)
-	}
-	for (x = 101; x <= 150; x++) {
-		wrap(A, x, 0, x, 50, 3, 3)
-		wrap(A, x, 51, x, 1, 1, 1)
-		wrap(B, x, 0, x-100, 200, 3, 3)
-		wrap(B, x, 51, 100, x-50, 2, 1)
-	}
-}
-
+function C(u,b,e,w,r,a,p){p+=a+1e3*e+4*b;u[p]=(1e3*r+4*w+a)-p}BEGIN{for(f=50;
+y++<f;)C(A,f,y,a=3*f,y,2)C(A,b=a+1,y,51,y)C(B,b,y,c=2*f,b-y,2,-2)C(B,a/3,y,1,
+b-y,C(A,y,c,y,c*2,3),2)C(A,y,201,y,c+1,1)C(B,y,c,51,f+y,C(B,y,201,y+c,1,1),3)
+for(;y<2*f+1;y++)C(A,f,y,c,y,2)C(A,c+1,y,f+1,y)C(B,f,y,y-f,c+1,1,1)C(A,y,C(B,
+101,y,f+y,f,a/f,a/-f),y,a,3)C(B,y,C(A,y,b,y,1,1),1,c+y,C(B,y,b,f,c+y,2,-1),3)
+for(;y<b;y++)C(B,C(A,C(A,101,y,1,y),y,c,y,2),y,1+f,b-y,C(B,101,y,a,b-y,2,-2),
+2)C(A,y,C(A,y,c-f+1,y,1,1),y,f,3)C(B,y,C(B,y,f+1,c,y-f,2,-1),y-c,a+f,3);for(;
+1+y<a+f;y++)C(A,C(A,1+f,y,1,y),y,f,y,2)C(B,C(B,51,y,y-c,a,3,-3),y,y-c,1,1,1)}
 function M(o,v){for(p=1204;f=$++v;p-=p%4-(p+($v~/R/)+3*($v~/L/))%4)for(;f--;)
 {d=p%4;x=p+1e3*((d~1)-(d~3))+4*(!d-(d~2));x+=o[x];f*=O[int(x/4)]&&p=x}print p
 }gsub(/[RL]/," & "){M(A)M(B)}{for(i=split($0,l,z);i;i--)O[5^3*2*NR+i]=1~l[i]}
